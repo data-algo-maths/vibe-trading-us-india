@@ -1,0 +1,20 @@
+{
+  "codes": ["RVNL.NS"],
+  "start_date": "2019-04-11",
+  "end_date": "2026-07-17",
+  "source": "auto",
+  "interval": "1D",
+  "engine": "daily",
+  "initial_cash": 1000000,
+  "allow_short": false,
+  "price_limit": 0.20,
+  "slippage": 0.001,
+  "in_brokerage": 0.0,
+  "in_stt": 0.001,
+  "in_exchange_txn": 0.0000297,
+  "in_sebi_fee": 0.000001,
+  "in_stamp_duty": 0.00015,
+  "in_gst": 0.18,
+  "in_dp_charge": 0.0
+}
+
