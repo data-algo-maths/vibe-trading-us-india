@@ -90,3 +90,5 @@ AGENTS.md
 # Alpha Zoo wiki artifacts (generated, not source)
 wiki/alpha-library/manifest.json
 wiki/alpha-library/content/
+# Time-dependent India strategy-lab screening output
+examples/us_india/strategy_lab_output/

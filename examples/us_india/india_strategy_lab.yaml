@@ -1,0 +1,78 @@
+watchlists:
+  nse_research_examples:
+    - RELIANCE.NS
+    - TCS.NS
+    - INFY.NS
+    - HDFCBANK.NS
+    - ITC.NS
+  bse_symbol_examples:
+    - 500325.BO
+    - 532540.BO
+
+profiles:
+  long_term:
+    description: Research candidates for a one-to-five-year horizon.
+    watchlists: [nse_research_examples, bse_symbol_examples]
+    start_date: 2015-01-01
+    source: auto
+    fee_rate: 0.0015
+    strategies:
+      - name: moving_average_trend
+        parameters:
+          fast_window: 100
+          slow_window: 250
+          volatility_window: 63
+          target_volatility: 0.12
+          max_weight: 0.05
+      - name: dual_momentum
+        parameters:
+          short_lookback: 126
+          long_lookback: 252
+          trend_window: 200
+          max_weight: 0.05
+
+  swing_monthly:
+    description: Weekly research for positions intended to last roughly one month.
+    watchlists: [nse_research_examples]
+    start_date: 2019-01-01
+    source: auto
+    fee_rate: 0.002
+    strategies:
+      - name: dual_momentum
+        parameters:
+          short_lookback: 21
+          long_lookback: 63
+          trend_window: 100
+          max_weight: 0.03
+      - name: donchian_breakout
+        parameters:
+          entry_window: 20
+          exit_window: 10
+          max_weight: 0.03
+      - name: zscore_mean_reversion
+        parameters:
+          window: 20
+          entry_z: -2.0
+          exit_z: -0.25
+          trend_window: 100
+          max_weight: 0.02
+
+  tactical_daily:
+    description: End-of-day paper signals for short tactical research only.
+    watchlists: [nse_research_examples]
+    start_date: 2022-01-01
+    source: auto
+    fee_rate: 0.0025
+    strategies:
+      - name: donchian_breakout
+        parameters:
+          entry_window: 10
+          exit_window: 5
+          max_weight: 0.01
+      - name: zscore_mean_reversion
+        parameters:
+          window: 10
+          entry_z: -1.75
+          exit_z: -0.10
+          trend_window: 50
+          max_weight: 0.01
