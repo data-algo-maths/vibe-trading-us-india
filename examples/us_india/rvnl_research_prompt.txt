@@ -1,0 +1,22 @@
+Create an evidence-bound research report for RVNL.NS. This is research-only:
+do not place or recommend a live order.
+
+1. Verify the latest financial results and material claims against official
+   NSE/BSE filings. Do not treat the reported RVNL-IRCON merger as a catalyst
+   without a subsequent official exchange filing confirming it.
+2. Load adjusted daily OHLCV data from listing through the latest available
+   session with source=auto.
+3. Run the deterministic example in examples/us_india/rvnl_backtest using the
+   India equity engine and its configured delivery costs and slippage.
+4. Compare it with buy-and-hold and, if reliable data is available, an Indian
+   infrastructure benchmark.
+5. Perform walk-forward and parameter-sensitivity checks for the moving-average,
+   breakout, volume, ATR-stop, and holding-period parameters.
+6. Report CAGR, Sharpe, maximum drawdown, turnover, transaction costs, win rate,
+   exposure, number of trades, and results by market regime.
+7. State the latest target-position signal and its data timestamp. If it is not
+   a fresh confirmed signal, classify RVNL as watchlist-only.
+8. Produce a paper-trade proposal only when out-of-sample validation passes.
+   Include the hypothesis, invalidation rule, proposed entry condition, stop
+   methodology, and position-risk formula. Do not submit it to a broker.
+
