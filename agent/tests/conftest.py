@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
@@ -11,6 +12,10 @@ import pytest
 AGENT_DIR = Path(__file__).resolve().parent.parent
 if str(AGENT_DIR) not in sys.path:
     sys.path.insert(0, str(AGENT_DIR))
+
+# Preserve upstream multi-market expectations in the existing test suite.
+# India-policy tests opt into strict mode explicitly with monkeypatch.
+os.environ["VIBE_TRADING_MARKET_POLICY"] = "global"
 
 
 @pytest.fixture(autouse=True)

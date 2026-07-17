@@ -231,3 +231,28 @@ def get_loader_cls_with_fallback(source: str) -> Type[Any]:
     raise NoAvailableSourceError(
         f"Data source '{source}' is unavailable and no fallback found."
     )
+
+
+def get_loader_cls_exact(source: str) -> Type[Any]:
+    """Return exactly *source* or fail without provider/market fallback.
+
+    India-strict runs use this resolver so an outage cannot silently change
+    the data vendor, market semantics, or cost model.
+    """
+    _ensure_registered()
+    if source not in LOADER_REGISTRY:
+        raise NoAvailableSourceError(
+            f"VOIDED: required data source {source!r} is not registered; fallback is disabled"
+        )
+    loader_cls = LOADER_REGISTRY[source]
+    try:
+        loader = loader_cls()
+    except Exception as exc:
+        raise NoAvailableSourceError(
+            f"VOIDED: required data source {source!r} failed to initialize; fallback is disabled"
+        ) from exc
+    if not loader.is_available():
+        raise NoAvailableSourceError(
+            f"VOIDED: required data source {source!r} is unavailable; fallback is disabled"
+        )
+    return loader_cls

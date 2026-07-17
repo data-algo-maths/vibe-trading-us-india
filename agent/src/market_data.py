@@ -26,6 +26,7 @@ _SOURCE_PATTERNS = [
     # India: NSE (RELIANCE.NS) / BSE (500325.BO). Tickers may carry '&' and '-'
     # (e.g. M&M.NS, BAJAJ-AUTO.NS). Served by Yahoo's public chart endpoint.
     (re.compile(r"^[A-Z0-9&.\-]+\.(NS|BO)$", re.I), "yahoo"),
+    (re.compile(r"^\^(NSEI|NSEBANK|CNXIT|CNXPHARMA|CNXAUTO|BSESN)$", re.I), "yahoo"),
     (re.compile(r"^[A-Z]+-USDT$", re.I), "okx"),
     (re.compile(r"^[A-Z]+/USDT$", re.I), "ccxt"),
 ]
@@ -44,6 +45,13 @@ def get_loader(source: str):
     from backtest.loaders.registry import get_loader_cls_with_fallback
 
     return get_loader_cls_with_fallback(source)
+
+
+def get_loader_exact(source: str):
+    """Get exactly one loader without falling through to another provider."""
+    from backtest.loaders.registry import get_loader_cls_exact
+
+    return get_loader_cls_exact(source)
 
 
 def cap_rows(records: list, max_rows: int) -> list | dict[str, object]:
@@ -88,7 +96,14 @@ def fetch_market_data(
     loader_resolver: Callable[[str], type] = get_loader,
 ) -> dict[str, Any]:
     """Fetch normalized OHLCV data through the repository loader layer."""
+    from src.market_policy import enforce_india_request, india_strict_enabled
+
     results: dict[str, Any] = {}
+
+    strict_india = india_strict_enabled()
+    if strict_india:
+        codes, source = enforce_india_request(codes, source)
+        loader_resolver = get_loader_exact
 
     if source == "auto":
         groups: dict[str, list[str]] = {}
@@ -103,12 +118,16 @@ def fetch_market_data(
         loader = loader_cls()
         try:
             data_map = loader.fetch(src_codes, start_date, end_date, interval=interval)
-        except Exception:
+        except Exception as exc:
             logger.exception(
                 "market-data loader %r failed for %s; codes fall through to _unresolved",
                 src,
                 src_codes,
             )
+            if strict_india:
+                raise RuntimeError(
+                    f"VOIDED: required India data source {src!r} failed; fallback is disabled"
+                ) from exc
             data_map = {}
         for symbol, df in data_map.items():
             records = df.reset_index().to_dict(orient="records")
@@ -119,6 +138,11 @@ def fetch_market_data(
 
     unresolved = [code for code in codes if code not in results]
     if unresolved:
+        if strict_india:
+            raise RuntimeError(
+                "VOIDED: required India symbols returned no data and fallback is disabled: "
+                + ", ".join(unresolved)
+            )
         results["_unresolved"] = unresolved
 
     return results

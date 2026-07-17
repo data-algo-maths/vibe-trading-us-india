@@ -31,6 +31,7 @@ from backtest.loaders.registry import (
     FALLBACK_CHAINS,
     LOADER_REGISTRY,
     VALID_SOURCES,
+    get_loader_cls_exact,
     get_loader_cls_with_fallback,
     resolve_loader,
 )
@@ -73,7 +74,7 @@ class BacktestConfigSchema(BaseModel):
     codes: List[str]
     start_date: str
     end_date: str
-    source: str = "tushare"
+    source: str = "auto"
     interval: str = "1D"
     engine: str = "daily"
     # Returns divide by initial_cash, so a non-positive value yields inf/NaN
@@ -863,7 +864,7 @@ def main(run_dir: Path) -> None:
         sys.exit(1)
 
     config = raw_config
-    source = config.get("source", "tushare")
+    source = config.get("source", "auto")
     codes = config.get("codes", [])
 
     # Load signal engine
@@ -1077,9 +1078,48 @@ def fetch_data_map(config: dict) -> DataFetchResult:
         Data and effective routing metadata. The input config is not mutated.
     """
     config = copy.deepcopy(config)
-    source = str(config.get("source") or "tushare")
+    source = str(config.get("source") or "auto")
     codes = list(config.get("codes") or [])
     interval = str(config.get("interval") or "1D")
+
+    from src.market_policy import enforce_india_request, india_strict_enabled
+
+    strict_india = india_strict_enabled()
+    if strict_india:
+        codes, source = enforce_india_request(codes, source)
+        loader = get_loader_cls_exact(source)()
+        try:
+            data_map = loader.fetch(
+                codes,
+                config.get("start_date", ""),
+                config.get("end_date", ""),
+                fields=config.get("extra_fields") or None,
+                interval=interval,
+            )
+        except Exception as exc:
+            raise NoAvailableSourceError(
+                f"VOIDED: required India data source {source!r} failed; fallback is disabled"
+            ) from exc
+        missing = sorted(set(codes) - set(data_map))
+        if missing:
+            raise NoAvailableSourceError(
+                "VOIDED: required India symbols returned no data and fallback is disabled: "
+                + ", ".join(missing)
+            )
+        data_map = _sanitize_data_map(data_map)
+        invalid = sorted(set(codes) - set(data_map))
+        if invalid:
+            raise NoAvailableSourceError(
+                "VOIDED: India data failed OHLC validation and fallback is disabled: "
+                + ", ".join(invalid)
+            )
+        return DataFetchResult(
+            data_map=data_map,
+            codes=codes,
+            source=source,
+            loader=loader,
+            effective_sources=[source],
+        )
 
     if source == "auto":
         data_map = _fetch_auto(codes, config, interval)
