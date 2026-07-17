@@ -1,0 +1,81 @@
+{
+  "artifacts": [
+    {
+      "path": "artifacts/equity.csv",
+      "sha256": "89046c28e2b7f3103052d3901574d3720a112a22f226bf2957b549af3db4b385",
+      "size_bytes": 166697
+    },
+    {
+      "path": "artifacts/metrics.csv",
+      "sha256": "2640ecf109a7a3dcb42fea5f5ffa697182da12abdb32aa8cf9f7ebb9939c070d",
+      "size_bytes": 446
+    },
+    {
+      "path": "artifacts/ohlcv_RVNL.NS.csv",
+      "sha256": "8212942688ca7851bdac2e3df905c08ec406e7d00f67e7c91a974fc53af254d6",
+      "size_bytes": 147457
+    },
+    {
+      "path": "artifacts/positions.csv",
+      "sha256": "b4804bf6e989de779f19fbf4bfc21883afac6acc14598dd86578337c56b3afd2",
+      "size_bytes": 27263
+    },
+    {
+      "path": "artifacts/trades.csv",
+      "sha256": "a45e61ae452bee5f16521e92afd6236bd5a776cd8bef2a43d40cde025ff1e7f2",
+      "size_bytes": 1618
+    },
+    {
+      "path": "code/signal_engine.py",
+      "sha256": "9cf4a6a9ed4a38d1028446cd0e7b9f34fb5ad13ff68a5795dbaa84fa1d1bdf45",
+      "size_bytes": 3464
+    },
+    {
+      "path": "config.json",
+      "sha256": "3615f7f24c6b6521929320f443a814e1f093e86f2a1fabeb36d2e56f5b529613",
+      "size_bytes": 412
+    }
+  ],
+  "backtest": {
+    "codes": [
+      "RVNL.NS"
+    ],
+    "end_date": "2026-07-17",
+    "engine": "daily",
+    "initial_cash": 1000000,
+    "interval": "1D",
+    "source": "auto",
+    "start_date": "2019-04-11"
+  },
+  "data_sources": [
+    "yahoo"
+  ],
+  "generated_at": "2026-07-17T07:59:41.365942Z",
+  "metrics": {
+    "annual_return": 0.012282994267719616,
+    "avg_holding_days": 21.2,
+    "avg_turnover": 0.000384,
+    "benchmark_return": 10.820998,
+    "calmar": 0.5441,
+    "excess_return": -10.729987,
+    "final_value": 1091010.4953556813,
+    "information_ratio": -0.9223,
+    "max_consecutive_loss": 2,
+    "max_drawdown": -0.022576913359433032,
+    "profit_factor": 5.5246,
+    "profit_loss_ratio": 4.7354,
+    "sharpe": 0.6708186924382982,
+    "sortino": 0.4751,
+    "total_return": 0.09101049535568118,
+    "total_turnover": 0.69061,
+    "trade_count": 13,
+    "win_rate": 0.5384615384615384
+  },
+  "reproducibility": {
+    "config_hash": "3615f7f24c6b6521929320f443a814e1f093e86f2a1fabeb36d2e56f5b529613",
+    "strategy_hash": "9cf4a6a9ed4a38d1028446cd0e7b9f34fb5ad13ff68a5795dbaa84fa1d1bdf45"
+  },
+  "run_dir": "/workspaces/vibe-trading-us-india/examples/us_india/rvnl_backtest",
+  "schema_version": "0.1",
+  "warnings": []
+}
