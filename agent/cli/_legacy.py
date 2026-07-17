@@ -3035,11 +3035,15 @@ def _dispatch_channels(args: argparse.Namespace) -> int:
 # QVERIS-INTEGRATION
 def _print_qveris_config(config) -> None:  # QVERIS-INTEGRATION
     """Render local QVeris config."""  # QVERIS-INTEGRATION
+    from src.market_policy import INDIA_ALLOWED_SOURCES, market_policy_mode
     from src.tools.qveris_tool import SIGNUP_URL, INVITE_CODE, has_qveris_credentials, is_qveris_configured, mask_api_key, normalize_qveris_mode  # QVERIS-INTEGRATION
     table = Table(title="Data Routing", box=box.SIMPLE)  # QVERIS-INTEGRATION
     table.add_column("Field")  # QVERIS-INTEGRATION
     table.add_column("Value")  # QVERIS-INTEGRATION
     table.add_row("mode", normalize_qveris_mode(config.mode))  # QVERIS-INTEGRATION
+    table.add_row("market_policy", market_policy_mode())
+    table.add_row("strict_sources", ", ".join(sorted(INDIA_ALLOWED_SOURCES)))
+    table.add_row("cross-market fallback", "disabled" if market_policy_mode() == "india_strict" else "enabled")
     table.add_row("free_route", "built-in public data")  # QVERIS-INTEGRATION
     table.add_row("premium_provider", "QVeris")  # QVERIS-INTEGRATION
     table.add_row("paid_active", "yes" if is_qveris_configured(config) else "no")  # QVERIS-INTEGRATION
@@ -5418,7 +5422,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "list":
         return _coerce_exit_code(cmd_list(args.list_limit))
     if args.command == "show":
-        return _coerce_exit_code(cmd_show(args.show))
+        return _coerce_exit_code(cmd_show(args.run_id))
     if args.command == "chat":
         return _coerce_exit_code(cmd_interactive(args.chat_max_iter))
     if args.command == "alpha":

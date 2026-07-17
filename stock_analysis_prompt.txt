@@ -1,0 +1,222 @@
+Perform an evidence-bound, paper-only analysis of RELIANCE.NS for the Indian stock market.
+
+MARKET AND DATA RULES
+- Treat RELIANCE.NS as an Indian equity only.
+- Use the repository's market-data, backtesting, technical-analysis and risk tools.
+- Use only approved India sources under the india_strict policy.
+- Do not switch to Tushare, AKShare, Eastmoney, crypto, US, Hong Kong, China or another market.
+- Benchmark the stock against ^NSEI for NSE stocks or ^BSESN for BSE stocks.
+- State the actual data provider, first observation date, latest observation date and latest closing price.
+- Verify that the latest observation is reasonably current for the latest completed Indian trading session.
+- If required price, benchmark, fundamental or financial-statement data is missing, stale, invalid or unavailable, mark the affected analysis VOIDED.
+- Never invent or estimate missing data.
+
+ANALYSIS HORIZONS
+Analyze the stock separately for:
+
+1. Long term: 1 to 5 years
+2. Swing: approximately one month, reviewed weekly
+3. Tactical: daily end-of-day paper signals
+
+FUNDAMENTAL ANALYSIS
+When reliable data is available, evaluate:
+
+- revenue, earnings and operating-profit growth
+- operating and net margins
+- return on equity and return on capital
+- operating cash flow and free cash flow
+- debt, interest coverage and liquidity
+- promoter ownership and pledge, when applicable
+- valuation using P/E, P/B, EV/EBITDA and free-cash-flow yield
+- valuation relative to its historical range and Indian sector peers
+- recent official NSE/BSE filings and material corporate events
+- business quality, competitive position, governance and key risks
+
+Clearly separate verified facts, calculated metrics and assumptions. If fundamentals cannot be verified, mark the fundamental section VOIDED without voiding valid price-only analysis.
+
+TECHNICAL ANALYSIS
+Calculate and interpret:
+
+- 20, 50, 100 and 200-session moving averages
+- RSI
+- MACD
+- ATR and recent volatility
+- volume trend
+- support and resistance
+- trend strength
+- breakout and mean-reversion conditions
+- maximum drawdown
+- correlation and beta against the selected Indian benchmark
+
+BACKTESTING
+Use the repository backtesting tools to test, when sufficient history exists:
+
+- moving-average trend
+- dual momentum
+- Donchian breakout
+- z-score mean reversion
+- buy-and-hold benchmark
+
+Use next-session execution to prevent look-ahead bias. Include realistic Indian delivery transaction costs, slippage and turnover. Use walk-forward or chronological out-of-sample validation. Do not optimize and evaluate parameters on the same period.
+
+Report:
+
+- total and annualized return
+- benchmark return and excess return
+- Sharpe ratio
+- maximum drawdown
+- volatility
+- turnover
+- number of trades
+- win rate, when available
+- exposure
+- transaction-cost impact
+- in-sample versus out-of-sample performance
+- data source and tested date range
+
+RISK ANALYSIS
+Assess:
+
+- company-specific and sector risks
+- valuation risk
+- liquidity and gap risk
+- volatility and drawdown risk
+- concentration risk
+- event and governance risk
+- strategy failure conditions
+- data quality limitations
+
+FINAL OUTPUT
+Provide:
+
+1. Data-integrity status: VALID or VOIDED
+2. Executive summary
+3. Fundamental assessment
+4. Valuation assessment
+5. Technical assessment
+6. Backtest comparison table
+7. Long-term 1-5 year research view
+8. One-month swing research view
+9. Daily tactical paper signal
+10. Risks and invalidation conditions
+11. Data limitations
+12. Paper-trade journal entry
+
+For each horizon, classify the result as:
+
+- RESEARCH CANDIDATE
+- WATCHLIST
+- AVOID
+Perform an evidence-bound, paper-only analysis of RELIANCE.NS for the Indian stock market.
+
+MARKET AND DATA RULES
+- Treat RELIANCE.NS as an Indian equity only.
+- Use the repository's market-data, backtesting, technical-analysis and risk tools.
+- Use only approved India sources under the india_strict policy.
+- Do not switch to Tushare, AKShare, Eastmoney, crypto, US, Hong Kong, China or another market.
+- Benchmark the stock against ^NSEI for NSE stocks or ^BSESN for BSE stocks.
+- State the actual data provider, first observation date, latest observation date and latest closing price.
+- Verify that the latest observation is reasonably current for the latest completed Indian trading session.
+- If required price, benchmark, fundamental or financial-statement data is missing, stale, invalid or unavailable, mark the affected analysis VOIDED.
+- Never invent or estimate missing data.
+
+ANALYSIS HORIZONS
+Analyze the stock separately for:
+
+1. Long term: 1 to 5 years
+2. Swing: approximately one month, reviewed weekly
+3. Tactical: daily end-of-day paper signals
+
+FUNDAMENTAL ANALYSIS
+When reliable data is available, evaluate:
+
+- revenue, earnings and operating-profit growth
+- operating and net margins
+- return on equity and return on capital
+- operating cash flow and free cash flow
+- debt, interest coverage and liquidity
+- promoter ownership and pledge, when applicable
+- valuation using P/E, P/B, EV/EBITDA and free-cash-flow yield
+- valuation relative to its historical range and Indian sector peers
+- recent official NSE/BSE filings and material corporate events
+- business quality, competitive position, governance and key risks
+
+Clearly separate verified facts, calculated metrics and assumptions. If fundamentals cannot be verified, mark the fundamental section VOIDED without voiding valid price-only analysis.
+
+TECHNICAL ANALYSIS
+Calculate and interpret:
+
+- 20, 50, 100 and 200-session moving averages
+- RSI
+- MACD
+- ATR and recent volatility
+- volume trend
+- support and resistance
+- trend strength
+- breakout and mean-reversion conditions
+- maximum drawdown
+- correlation and beta against the selected Indian benchmark
+
+BACKTESTING
+Use the repository backtesting tools to test, when sufficient history exists:
+
+- moving-average trend
+- dual momentum
+- Donchian breakout
+- z-score mean reversion
+- buy-and-hold benchmark
+
+Use next-session execution to prevent look-ahead bias. Include realistic Indian delivery transaction costs, slippage and turnover. Use walk-forward or chronological out-of-sample validation. Do not optimize and evaluate parameters on the same period.
+
+Report:
+
+- total and annualized return
+- benchmark return and excess return
+- Sharpe ratio
+- maximum drawdown
+- volatility
+- turnover
+- number of trades
+- win rate, when available
+- exposure
+- transaction-cost impact
+- in-sample versus out-of-sample performance
+- data source and tested date range
+
+RISK ANALYSIS
+Assess:
+
+- company-specific and sector risks
+- valuation risk
+- liquidity and gap risk
+- volatility and drawdown risk
+- concentration risk
+- event and governance risk
+- strategy failure conditions
+- data quality limitations
+
+FINAL OUTPUT
+Provide:
+
+1. Data-integrity status: VALID or VOIDED
+2. Executive summary
+3. Fundamental assessment
+4. Valuation assessment
+5. Technical assessment
+6. Backtest comparison table
+7. Long-term 1-5 year research view
+8. One-month swing research view
+9. Daily tactical paper signal
+10. Risks and invalidation conditions
+11. Data limitations
+12. Paper-trade journal entry
+
+For each horizon, classify the result as:
+
+- RESEARCH CANDIDATE
+- WATCHLIST
+- AVOID
+- VOIDED
+
+- VOIDED
+
