@@ -55,3 +55,55 @@ The central router will select the US loader chain and the global equity
 engine. Review the US engine's simplified commission, borrowing, and slippage
 assumptions before relying on a result.
 
+## India mathematical strategy lab
+
+The strategy lab screens reusable NSE/BSE watchlists across separate long-term,
+monthly-swing, and daily-tactical research profiles. It ships four defaults:
+
+- inverse-volatility moving-average trend;
+- dual momentum;
+- Donchian channel breakout; and
+- rolling z-score mean reversion.
+
+All targets are long-only and capped by the profile configuration. The screening
+backtester applies next-bar positions and explicit turnover costs. It is intended
+for broad comparison; promote shortlisted ideas to the main Vibe-Trading runner
+for market-specific execution rules, run cards, and deeper validation.
+
+Run all configured profiles:
+
+```bash
+vibe-india-lab \
+  --config examples/us_india/india_strategy_lab.yaml \
+  --output examples/us_india/strategy_lab_output
+```
+
+Run only the weekly one-month profile:
+
+```bash
+vibe-india-lab \
+  --config examples/us_india/india_strategy_lab.yaml \
+  --profile swing_monthly \
+  --output examples/us_india/strategy_lab_output
+```
+
+The YAML symbols are research examples, not recommendations. Replace them with
+your approved universe and verify current NSE/BSE identifiers. Keep the output
+directory out of commits because it contains time-dependent market results.
+
+### Adding a mathematical strategy
+
+Subclass `MathematicalStrategy`, give the class a unique `name`, and implement
+`generate(frame)` to return a pandas Series of target weights. The example plug-in
+at `custom_strategy_example.py` can be loaded without changing the registry:
+
+```bash
+vibe-india-lab \
+  --config examples/us_india/india_strategy_lab.yaml \
+  --profile swing_monthly \
+  --plugin examples/us_india/custom_strategy_example.py:PriceChannelStrategy \
+  --output examples/us_india/strategy_lab_output
+```
+
+Custom strategies should avoid look-ahead data, emit finite weights, document
+their assumptions, and be tested across multiple regimes before paper use.
