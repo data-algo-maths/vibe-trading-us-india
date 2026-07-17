@@ -34,8 +34,10 @@ _INDIA_INDICES = frozenset(
 
 # Explicit providers are permitted, but they never fall through to another
 # provider in strict mode.  Yahoo is the free default.  Broker/local sources
-# are opt-in and must be configured by the operator.
-INDIA_ALLOWED_SOURCES = frozenset({"yahoo", "india_broker", "local"})
+# are opt-in and must be configured by the operator. ``yfinance`` is the free
+# default because it is the repository's registered, preflight-checked Yahoo
+# implementation and natively preserves NSE/BSE suffixes.
+INDIA_ALLOWED_SOURCES = frozenset({"yfinance", "india_broker", "local"})
 
 
 def market_policy_mode() -> str:
@@ -78,7 +80,7 @@ def enforce_india_source(source: str) -> str:
     """Normalize and validate a provider without allowing fallback."""
     normalized = str(source or "auto").strip().lower()
     if normalized == "auto":
-        return "yahoo"
+        return "yfinance"
     if normalized not in INDIA_ALLOWED_SOURCES:
         raise MarketPolicyError(
             "VOIDED: India-strict policy permits only "

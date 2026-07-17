@@ -45,29 +45,29 @@ def test_non_india_symbols_are_rejected(symbol: str) -> None:
         enforce_india_request([symbol], "auto")
 
 
-@pytest.mark.parametrize("source", ["yfinance", "tushare", "akshare", "auto-global"])
+@pytest.mark.parametrize("source", ["yahoo", "tushare", "akshare", "auto-global"])
 def test_cross_provider_sources_are_rejected(source: str) -> None:
     with pytest.raises(MarketPolicyError, match="Provider switching is disabled"):
         enforce_india_request(["RVNL.NS"], source)
 
 
-def test_auto_is_pinned_to_yahoo() -> None:
+def test_auto_is_pinned_to_yfinance() -> None:
     symbols, source = enforce_india_request(["rvnl.ns", "^nsei"], "auto")
     assert symbols == ["RVNL.NS", "^NSEI"]
-    assert source == "yahoo"
+    assert source == "yfinance"
 
 
 def test_backtest_fetch_is_fail_closed(monkeypatch: pytest.MonkeyPatch) -> None:
     from backtest import runner
 
-    class EmptyYahoo:
-        name = "yahoo"
+    class EmptyYfinance:
+        name = "yfinance"
 
         def fetch(self, *args, **kwargs):
             return {}
 
     monkeypatch.setenv("VIBE_TRADING_MARKET_POLICY", "india_strict")
-    monkeypatch.setattr(runner, "get_loader_cls_exact", lambda source: EmptyYahoo)
+    monkeypatch.setattr(runner, "get_loader_cls_exact", lambda source: EmptyYfinance)
 
     with pytest.raises(NoAvailableSourceError, match="fallback is disabled"):
         runner.fetch_data_map(
@@ -81,20 +81,20 @@ def test_backtest_fetch_is_fail_closed(monkeypatch: pytest.MonkeyPatch) -> None:
         )
 
 
-def test_backtest_fetch_uses_only_exact_yahoo(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_backtest_fetch_uses_only_exact_yfinance(monkeypatch: pytest.MonkeyPatch) -> None:
     from backtest import runner
 
     calls: list[tuple[list[str], str]] = []
 
-    class Yahoo:
-        name = "yahoo"
+    class Yfinance:
+        name = "yfinance"
 
         def fetch(self, codes, start_date, end_date, **kwargs):
             calls.append((list(codes), kwargs["interval"]))
             return {code: _bars() for code in codes}
 
     monkeypatch.setenv("VIBE_TRADING_MARKET_POLICY", "india_strict")
-    monkeypatch.setattr(runner, "get_loader_cls_exact", lambda source: Yahoo)
+    monkeypatch.setattr(runner, "get_loader_cls_exact", lambda source: Yfinance)
 
     result = runner.fetch_data_map(
         {
@@ -107,20 +107,20 @@ def test_backtest_fetch_uses_only_exact_yahoo(monkeypatch: pytest.MonkeyPatch) -
     )
 
     assert calls == [(["RVNL.NS", "^NSEI"], "1D")]
-    assert result.source == "yahoo"
-    assert result.effective_sources == ["yahoo"]
+    assert result.source == "yfinance"
+    assert result.effective_sources == ["yfinance"]
     assert set(result.data_map) == {"RVNL.NS", "^NSEI"}
 
 
-def test_market_data_tool_uses_exact_yahoo(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_market_data_tool_uses_exact_yfinance(monkeypatch: pytest.MonkeyPatch) -> None:
     from src import market_data
 
-    class Yahoo:
+    class Yfinance:
         def fetch(self, codes, start_date, end_date, **kwargs):
             return {code: _bars() for code in codes}
 
     monkeypatch.setenv("VIBE_TRADING_MARKET_POLICY", "india_strict")
-    monkeypatch.setattr(market_data, "get_loader_exact", lambda source: Yahoo)
+    monkeypatch.setattr(market_data, "get_loader_exact", lambda source: Yfinance)
 
     result = market_data.fetch_market_data(
         codes=["RVNL.NS", "^NSEI"],
@@ -137,17 +137,27 @@ def test_market_data_tool_uses_exact_yahoo(monkeypatch: pytest.MonkeyPatch) -> N
 def test_market_data_tool_voids_empty_required_data(monkeypatch: pytest.MonkeyPatch) -> None:
     from src import market_data
 
-    class EmptyYahoo:
+    class EmptyYfinance:
         def fetch(self, codes, start_date, end_date, **kwargs):
             return {}
 
     monkeypatch.setenv("VIBE_TRADING_MARKET_POLICY", "india_strict")
-    monkeypatch.setattr(market_data, "get_loader_exact", lambda source: EmptyYahoo)
+    monkeypatch.setattr(market_data, "get_loader_exact", lambda source: EmptyYfinance)
 
     with pytest.raises(RuntimeError, match="VOIDED.*fallback is disabled"):
         market_data.fetch_market_data(
             codes=["RVNL.NS"],
             start_date="2025-01-01",
             end_date="2025-12-31",
-            source="yahoo",
+            source="yfinance",
         )
+
+
+def test_show_subcommand_uses_positional_run_id(monkeypatch: pytest.MonkeyPatch) -> None:
+    from cli import _legacy
+
+    seen: list[str] = []
+    monkeypatch.setattr(_legacy, "cmd_show", lambda run_id: seen.append(run_id))
+
+    assert _legacy.main(["show", "run-123"]) == 0
+    assert seen == ["run-123"]

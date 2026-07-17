@@ -118,9 +118,9 @@ Under the strict policy:
 
 - only NSE (`.NS`), BSE (`.BO`), and approved Indian benchmark symbols are
   accepted;
-- `source: auto` is pinned to the repository's direct `yahoo` loader;
-- explicit `yahoo`, `india_broker`, and `local` sources are allowed;
-- `yfinance`, Tushare, AKShare, Eastmoney, crypto, US, HK, and mixed-market
+- `source: auto` is pinned to the repository's registered `yfinance` loader;
+- explicit `yfinance`, `india_broker`, and `local` sources are allowed;
+- direct `yahoo`, Tushare, AKShare, Eastmoney, crypto, US, HK, and mixed-market
   requests are rejected;
 - source initialization, network, empty-data, and OHLC-validation failures
   void the run instead of activating another provider or market;
@@ -142,7 +142,7 @@ A strict backtest configuration should use:
 ```json
 {
   "codes": ["RVNL.NS", "^NSEI"],
-  "source": "yahoo",
+  "source": "yfinance",
   "interval": "1D"
 }
 ```
